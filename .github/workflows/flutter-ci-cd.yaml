@@ -9,6 +9,56 @@ on:
   workflow_dispatch: # to manually run this workflow
         
 jobs:
+  android:
+    name: Android CI/CD
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    
+    - name: Prepare key.jks & key.properties files
+      env:
+        FS_KEYSTORE_FILE: ${{ secrets.FS_KEYSTORE_FILE }}
+        FS_KEY_PROPERTIES_FILE: ${{ secrets.FS_KEY_PROPERTIES_FILE }}
+      run: |
+        echo "Convert base64 strings to files"
+        echo "$FS_KEYSTORE_FILE" >> key.jks.base64
+        echo "$FS_KEY_PROPERTIES_FILE" >> key.properties.base64
+        echo "done with base64 files creation"
+        base64 --decode key.jks.base64 > key.jks
+        echo "done key.jks"
+        base64 --decode key.properties.base64 > key.properties
+        echo "done key.properties"
+      working-directory: 'android/'
+     
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v1.4.0
+      with:
+        channel: 'stable' # 'dev', 'alpha', 'master', default to: 'stable'
+        # flutter-version: '1.22.x' # you can also specify exact version of flutter
+    
+    - name: Flutter doctor
+      run: flutter doctor
+    
+    - name: Build APK
+      run: flutter build apk --release
+    
+    - name: Upload APK artifact 
+      uses: actions/upload-artifact@v1
+      with:
+        name: release-apk
+        path: build/app/outputs/flutter-apk/app-release.apk
+
+    - name: Upload to Play Store
+      uses: r0adkll/upload-google-play@v1
+      with:
+        serviceAccountJsonPlainText: ${{ secrets.FS_ANDROID_SERVICE_ACCOUNT_JSON }}
+        packageName: com.daniilshumko.woeios
+        releaseFiles: build/app/outputs/flutter-apk/app-release.apk
+        track: internal
+
+
   ios:
     name: iOS CI/CD
     runs-on: macos-latest
