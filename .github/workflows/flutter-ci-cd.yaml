@@ -9,8 +9,33 @@ on:
   workflow_dispatch: # to manually run this workflow
         
 jobs:
+  code-analysis-and-testing:
+    name: Code analysis and testing
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v1.4.0
+      with:
+        channel: 'stable' # 'dev', 'alpha', 'master', default to: 'stable'
+        # flutter-version: '1.22.x' # you can also specify exact version of flutter
+
+    - name: Get pub dependencies
+      run: flutter pub get
+
+    - name: Flutter analyze
+      run: flutter analyze
+
+    - name: Flutter test
+      run: flutter test
+
+
   android:
     name: Android CI/CD
+    needs: code-analysis-and-testing
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -61,6 +86,7 @@ jobs:
 
   ios:
     name: iOS CI/CD
+    needs: code-analysis-and-testing
     runs-on: macos-latest
     timeout-minutes: 30
     steps:  
@@ -145,6 +171,7 @@ jobs:
   ios-pre-flutter-2:
     if: false
     name: iOS CI/CD pre Flutter 2
+    needs: code-analysis-and-testing
     runs-on: macos-latest
     timeout-minutes: 30
     steps:  
