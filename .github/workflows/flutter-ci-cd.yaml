@@ -168,6 +168,34 @@ jobs:
         xcrun altool --upload-app -t ios -f "$FS_IPA_PATH" -u "$FS_APPLE_ID_USERNAME" -p "$FS_APPLE_ID_APP_SPECIFIC_PASS"
 
 
+  web:
+    name: Web CI/CD
+    needs: code-analysis-and-testing
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v1.4.0
+      with:
+        channel: 'stable' # 'dev', 'alpha', 'master', default to: 'stable'
+        # flutter-version: '1.22.x' # you can also specify exact version of flutter
+    
+    - name: Flutter doctor
+      run: flutter doctor
+    
+    - name: Build web
+      run: flutter build web --release
+    
+    - name: Upload web artifact 
+      uses: actions/upload-artifact@v1
+      with:
+        name: release-web
+        path: build/web/
+
+
   ios-pre-flutter-2:
     if: false
     name: iOS CI/CD pre Flutter 2
