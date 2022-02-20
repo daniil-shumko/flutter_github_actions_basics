@@ -11,6 +11,7 @@ on:
 env:
   FLUTTER_CHANNEL: 'stable' # 'stable', 'beta', or 'master', default to: 'stable'
   FLUTTER_VERSION: '2.10.2'
+  XCODE_VERSION: '13.2.1'
 
 jobs:
   code-analysis-and-testing:
@@ -99,7 +100,7 @@ jobs:
     
     - uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: 12.4
+        xcode-version: ${{ env.XCODE_VERSION }}
 
     - name: Prepare signing
       env:
