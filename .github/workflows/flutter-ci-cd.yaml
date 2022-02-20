@@ -7,7 +7,11 @@ on:
   # pull_request:
   #   branches: [ main ] # Add this trigger to run this workflow on PR's to the main branch
   workflow_dispatch: # to manually run this workflow
-        
+
+env:
+  FLUTTER_CHANNEL: 'stable' # 'stable', 'beta', or 'master', default to: 'stable'
+  FLUTTER_VERSION: '2.10.2'
+
 jobs:
   code-analysis-and-testing:
     name: Code analysis and testing
@@ -20,8 +24,8 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        channel: 'stable' # 'dev', 'alpha', 'master', default to: 'stable'
-        # flutter-version: '1.22.x' # you can also specify exact version of flutter
+        channel: ${{ env.FLUTTER_CHANNEL }}
+        # flutter-version: ${{ env.FLUTTER_VERSION }} # you can also specify exact version of flutter
 
     - name: Get pub dependencies
       run: flutter pub get
@@ -60,8 +64,8 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        channel: 'stable' # 'dev', 'alpha', 'master', default to: 'stable'
-        # flutter-version: '1.22.x' # you can also specify exact version of flutter
+        channel: ${{ env.FLUTTER_CHANNEL }}
+        # flutter-version: ${{ env.FLUTTER_VERSION }} # you can also specify exact version of flutter
     
     - name: Flutter doctor
       run: flutter doctor
@@ -130,8 +134,8 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        channel: 'stable' # 'dev', 'alpha', 'master', default to: 'stable'
-        # flutter-version: '1.22.x' # you can also specify exact version of flutter
+        channel: ${{ env.FLUTTER_CHANNEL }}
+        # flutter-version: ${{ env.FLUTTER_VERSION }} # you can also specify exact version of flutter
     
     - name: Flutter doctor
       run: flutter doctor
@@ -180,8 +184,8 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        channel: 'stable' # 'dev', 'alpha', 'master', default to: 'stable'
-        # flutter-version: '1.22.x' # you can also specify exact version of flutter
+        channel: ${{ env.FLUTTER_CHANNEL }}
+        # flutter-version: ${{ env.FLUTTER_VERSION }} # you can also specify exact version of flutter
     
     - name: Flutter doctor
       run: flutter doctor
