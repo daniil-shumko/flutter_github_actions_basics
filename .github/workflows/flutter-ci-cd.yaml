@@ -74,7 +74,7 @@ jobs:
       run: flutter build apk --release
     
     - name: Upload APK artifact 
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
         name: release-apk
         path: build/app/outputs/flutter-apk/app-release.apk
@@ -158,7 +158,7 @@ jobs:
         security lock-keychain ~/Library/Keychains/build.keychain
 
     - name: Upload IPA artifact
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
         name: release-ipa
         path: ./build/ios/ipa/flutter_github_actions_basics.ipa
@@ -194,7 +194,7 @@ jobs:
       run: flutter build web --release
     
     - name: Upload web artifact 
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
         name: release-web
         path: build/web/
