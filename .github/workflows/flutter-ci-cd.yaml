@@ -12,6 +12,8 @@ env:
   FLUTTER_CHANNEL: 'stable' # 'stable', 'beta', or 'master', default to: 'stable'
   FLUTTER_VERSION: '2.10.5'
   XCODE_VERSION: '13.2.1'
+  PATH_TO_AAB: 'build/app/outputs/bundle/release/app-release.aab'
+  ANDROID_PACKAGE_NAME: 'com.daniilshumko.woeios'
 
 jobs:
   code-analysis-and-testing:
@@ -49,17 +51,15 @@ jobs:
     
     - name: Prepare key.jks & key.properties files
       env:
-        FS_KEYSTORE_FILE: ${{ secrets.FS_KEYSTORE_FILE }}
-        FS_KEY_PROPERTIES_FILE: ${{ secrets.FS_KEY_PROPERTIES_FILE }}
+        KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
+        KEY_PROPERTIES_FILE: ${{ secrets.KEY_PROPERTIES_FILE }}
       run: |
-        echo "Convert base64 strings to files"
-        echo "$FS_KEYSTORE_FILE" >> key.jks.base64
-        echo "$FS_KEY_PROPERTIES_FILE" >> key.properties.base64
-        echo "done with base64 files creation"
+        echo "Convert key base64 string to a file"
+        echo "$KEYSTORE_FILE" >> key.jks.base64
         base64 --decode key.jks.base64 > key.jks
-        echo "done key.jks"
-        base64 --decode key.properties.base64 > key.properties
-        echo "done key.properties"
+
+        echo "Convert key.properties secret string to a file"
+        echo "$KEY_PROPERTIES_FILE" >> key.properties
       working-directory: 'android/'
      
     - name: Set up Flutter
@@ -71,22 +71,18 @@ jobs:
     - name: Flutter doctor
       run: flutter doctor
     
-    - name: Build APK
-      run: flutter build apk --release
+    - name: Build AAB
+      run: flutter build appbundle --release
     
-    - name: Upload APK artifact 
+    - name: Upload AAB artifact 
       uses: actions/upload-artifact@v3
       with:
-        name: release-apk
-        path: build/app/outputs/flutter-apk/app-release.apk
+        name: release-aab
+        path: ${{ env.PATH_TO_AAB }}
 
     - name: Upload to Play Store
-      uses: r0adkll/upload-google-play@v1
-      with:
-        serviceAccountJsonPlainText: ${{ secrets.FS_ANDROID_SERVICE_ACCOUNT_JSON }}
-        packageName: com.daniilshumko.woeios
-        releaseFiles: build/app/outputs/flutter-apk/app-release.apk
-        track: internal
+      run: |
+        fastlane supply --aab ${{ env.PATH_TO_AAB }} --json_key_data '${{ secrets.ANDROID_SERVICE_ACCOUNT_JSON }}' --package_name '${{ env.ANDROID_PACKAGE_NAME }}' --track 'internal'
 
 
   ios:
