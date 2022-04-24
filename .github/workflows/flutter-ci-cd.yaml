@@ -10,7 +10,7 @@ on:
 
 env:
   FLUTTER_CHANNEL: 'stable' # 'stable', 'beta', or 'master', default to: 'stable'
-  FLUTTER_VERSION: '2.10.2'
+  FLUTTER_VERSION: '2.10.5'
   XCODE_VERSION: '13.2.1'
 
 jobs:
@@ -20,7 +20,7 @@ jobs:
     timeout-minutes: 30
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
@@ -45,7 +45,7 @@ jobs:
     timeout-minutes: 30
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     
     - name: Prepare key.jks & key.properties files
       env:
@@ -75,7 +75,7 @@ jobs:
       run: flutter build apk --release
     
     - name: Upload APK artifact 
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: release-apk
         path: build/app/outputs/flutter-apk/app-release.apk
@@ -96,7 +96,7 @@ jobs:
     timeout-minutes: 30
     steps:  
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     
     - uses: maxim-lobanov/setup-xcode@v1
       with:
@@ -159,7 +159,7 @@ jobs:
         security lock-keychain ~/Library/Keychains/build.keychain
 
     - name: Upload IPA artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: release-ipa
         path: ./build/ios/ipa/flutter_github_actions_basics.ipa
@@ -180,7 +180,7 @@ jobs:
     timeout-minutes: 30
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
@@ -195,7 +195,7 @@ jobs:
       run: flutter build web --release
     
     - name: Upload web artifact 
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: release-web
         path: build/web/
