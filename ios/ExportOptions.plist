@@ -4,21 +4,18 @@
 <dict>
 	<key>destination</key>
 	<string>export</string>
+	<key>manageAppVersionAndBuildNumber</key>
+	<false/>
 	<key>method</key>
 	<string>app-store</string>
-	<key>provisioningProfiles</key>
-	<dict>
-		<key>com.daniilshumko.woeios</key>
-		<string>Temp FS event cert</string>
-	</dict>
-	<key>signingCertificate</key>
-	<string>CA49BAAE48E3875EEA207D7D72288281B782C818</string>
 	<key>signingStyle</key>
-	<string>manual</string>
+	<string>automatic</string>
 	<key>stripSwiftSymbols</key>
 	<true/>
 	<key>teamID</key>
 	<string>493V9KUDF8</string>
+	<key>uploadBitcode</key>
+	<false/>
 	<key>uploadSymbols</key>
 	<true/>
 </dict>
