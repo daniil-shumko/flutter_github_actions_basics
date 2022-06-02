@@ -51,11 +51,11 @@ jobs:
     
     - name: Prepare key.jks & key.properties files
       env:
-        KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
+        KEYSTORE_FILE_BASE64: ${{ secrets.KEYSTORE_FILE_BASE64 }}
         KEY_PROPERTIES_FILE: ${{ secrets.KEY_PROPERTIES_FILE }}
       run: |
         echo "Convert key base64 string to a file"
-        echo "$KEYSTORE_FILE" >> key.jks.base64
+        echo "$KEYSTORE_FILE_BASE64" >> key.jks.base64
         base64 --decode key.jks.base64 > key.jks
 
         echo "Convert key.properties secret string to a file"
@@ -72,9 +72,13 @@ jobs:
       run: flutter doctor
     
     - name: Build AAB
-      run: flutter build appbundle --release
+      run: |
+        flutter build appbundle --release
+
+        echo "Removing signing files for extra security"
+        rm android/key.*
     
-    - name: Upload AAB artifact 
+    - name: Upload AAB artifact
       uses: actions/upload-artifact@v3
       with:
         name: release-aab
