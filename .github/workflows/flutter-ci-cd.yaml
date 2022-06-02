@@ -69,7 +69,7 @@ jobs:
         # flutter-version: ${{ env.FLUTTER_VERSION }} # you can also specify exact version of flutter
     
     - name: Flutter doctor
-      run: flutter doctor
+      run: flutter doctor # this is an optional step and can be removed
     
     - name: Build AAB
       run: |
@@ -98,11 +98,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
     
-    - uses: maxim-lobanov/setup-xcode@v1
+    - name: Set up Xcode ${{ env.XCODE_VERSION }}
+      uses: maxim-lobanov/setup-xcode@v1
       with:
         xcode-version: ${{ env.XCODE_VERSION }}
 
-    - name: Prepare signing
+    - name: Prepare code signing
       env:
         FS_KEYCHAIN_PASS: ${{ secrets.FS_KEYCHAIN_PASS }}
         FS_P12_FILE: ${{ secrets.FS_P12_FILE }}
@@ -139,7 +140,7 @@ jobs:
         # flutter-version: ${{ env.FLUTTER_VERSION }} # you can also specify exact version of flutter
     
     - name: Flutter doctor
-      run: flutter doctor
+      run: flutter doctor # this is an optional step and can be removed
 
     - name: Build IPA
       env:
@@ -189,7 +190,7 @@ jobs:
         # flutter-version: ${{ env.FLUTTER_VERSION }} # you can also specify exact version of flutter
     
     - name: Flutter doctor
-      run: flutter doctor
+      run: flutter doctor # this is an optional step and can be removed
     
     - name: Build web
       run: flutter build web --release
