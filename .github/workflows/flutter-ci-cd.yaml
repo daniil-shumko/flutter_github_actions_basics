@@ -90,6 +90,7 @@ jobs:
 
 
   ios:
+    if: false
     name: iOS CI/CD
     needs: code-analysis-and-testing
     runs-on: macos-12
