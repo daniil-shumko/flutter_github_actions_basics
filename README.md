@@ -1,4 +1,6 @@
-# [Main](https://github.com/daniil-shumko/flutter_github_actions_basics/tree/main) branch has the most up to date example!
-# This branch is the example code from [Flutter Scotland 2021](https://www.youtube.com/watch?v=LQoYTYFSiN8) and will no longer be updated.
+# 🚀 Ship beautiful apps faster with Flutter & GItHub Actions 🚀
+## Getting started
+To use the workflow for your own repo you simply need to copy the `.github` folder into your repository and make the following changes.
 
-- Added slides from the Flutter Scotland event to the `Presentation slides` folder.
+1. Step 1
+1. Step 2
