@@ -10,8 +10,8 @@ on:
 
 env:
   FLUTTER_CHANNEL: 'stable' # 'stable', 'beta', or 'master', default to: 'stable'
-  FLUTTER_VERSION: '3.0.0'
-  XCODE_VERSION: '13.3.1'
+  FLUTTER_VERSION: '3.0.1'
+  XCODE_VERSION: '13.4'
   PATH_TO_AAB: 'build/app/outputs/bundle/release/app-release.aab'
   ANDROID_PACKAGE_NAME: 'com.daniilshumko.woeios'
 
