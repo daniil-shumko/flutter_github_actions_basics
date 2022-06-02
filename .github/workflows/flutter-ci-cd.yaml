@@ -18,6 +18,7 @@ env:
 
 jobs:
   code-analysis-and-testing:
+    if: false
     name: Code analysis and testing
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -42,6 +43,7 @@ jobs:
 
 
   android:
+    if: false
     name: Android CI/CD
     needs: code-analysis-and-testing
     runs-on: ubuntu-latest
@@ -92,7 +94,7 @@ jobs:
 
   ios:
     name: iOS CI/CD
-    needs: code-analysis-and-testing
+    # needs: code-analysis-and-testing
     runs-on: macos-12
     timeout-minutes: 30
     steps:  
@@ -176,6 +178,7 @@ jobs:
 
 
   web:
+    if: false
     name: Web CI/CD
     needs: code-analysis-and-testing
     runs-on: ubuntu-latest
