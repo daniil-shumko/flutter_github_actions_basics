@@ -14,6 +14,7 @@ env:
   XCODE_VERSION: '13.4'
   PATH_TO_AAB: 'build/app/outputs/bundle/release/app-release.aab'
   ANDROID_PACKAGE_NAME: 'com.daniilshumko.woeios'
+  PATH_TO_IPA: 'build/ios/ipa/flutter_github_actions_basics.ipa'
 
 jobs:
   code-analysis-and-testing:
@@ -154,7 +155,7 @@ jobs:
         echo "Increasing keychain auto lock timeout"
         security set-keychain-settings -lut 1800 ~/Library/Keychains/build.keychain
 
-        flutter build ipa --release --export-options-plist=ios/ExportOptions.plist
+        flutter build ipa --release
 
         echo "Locking keychain"
         security lock-keychain ~/Library/Keychains/build.keychain
@@ -163,15 +164,15 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: release-ipa
-        path: ./build/ios/ipa/flutter_github_actions_basics.ipa
+        path: ${{ env.PATH_TO_IPA }}
 
     - name: Publishing app to TestFlight
       env:
-        FS_APPLE_ID_USERNAME: ${{ secrets.FS_APPLE_ID_USERNAME }}
-        FS_APPLE_ID_APP_SPECIFIC_PASS: ${{ secrets.FS_APPLE_ID_APP_SPECIFIC_PASS }}
-        FS_IPA_PATH: ./build/ios/ipa/flutter_github_actions_basics.ipa
+        IOS_API_ISSUER_ID: ${{ secrets.IOS_API_ISSUER_ID }}
+        IOS_API_KEY_ID: ${{ secrets.IOS_API_KEY_ID }}
+        PATH_TO_IPA: ${{ env.PATH_TO_IPA }}
       run: |
-        xcrun altool --upload-app -t ios -f "$FS_IPA_PATH" -u "$FS_APPLE_ID_USERNAME" -p "$FS_APPLE_ID_APP_SPECIFIC_PASS"
+        xcrun altool --upload-app -t ios -f $PATH_TO_IPA --apiKey "$IOS_API_KEY_ID" --apiIssuer "$IOS_API_ISSUER_ID"
 
 
   web:
